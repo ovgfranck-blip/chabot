@@ -1,25 +1,89 @@
-// À compléter : le comportement de votre chatbot.
-// Le navigateur exécute ce fichier grâce à son inclusion dans index.html.
+const chatbot = {
+  nom: "Akio",
+  accueil: "🦊 Salut, voyageur ! Je suis Akio, ton guide du Web. Écris « aide » pour commencer."
+};
 
-// 1. Déclarer l'objet qui décrit votre chatbot.
-// 2. Sélectionner les éléments de votre interface.
-// 3. Initialiser le nombre de messages valides.
+const champSaisie = document.getElementById("champ-message");
+const boutonEnvoyer = document.getElementById("bouton-envoyer");
+const boutonRecommencer = document.getElementById("bouton-recommencer");
+const zoneErreur = document.getElementById("retour-utilisateur");
+const historique = document.getElementById("historique");
+const zoneCompteur = document.getElementById("compteur-messages");
 
-// Cette fonction doit renvoyer un texte, sans modifier la page.
+let compteur = 0;
+
 function choisirReponse(texte) {
-  // TODO : comparer le texte reçu et renvoyer la réponse adaptée.
+
+  if (texte === "bonjour") {
+    return "🦊 Bonjour ! Je suis " + chatbot.nom + ", ton guide du développement Web.";
+  } else if (texte === "aide") {
+    return "🧭 Écris un mot, puis clique sur Envoyer. Mots-clés : bonjour, aide, html, css, javascript.";
+  } else if (texte === "html") {
+    return "🦴 HTML est le squelette de la page : titres, textes, champs et boutons.";
+  } else if (texte === "css") {
+    return "🎨 CSS est le styliste de la page : couleurs, polices et espacements.";
+  } else if (texte === "javascript") {
+    return "⚡ JavaScript est le cerveau de la page : il réagit aux clics et change l'affichage.";
+  } else {
+    
+    return "🤔 Message non reconnu. Écris « aide » pour voir les mots-clés.";
+  }
 }
 
-// Cette fonction relie la saisie, le calcul et l'affichage.
+function ajouterMessage(type, titre, texte) {
+  const bloc = document.createElement("div");
+  bloc.className = "message message--" + type;
+
+  const h2 = document.createElement("h2");
+  h2.className = "message__title";
+  h2.textContent = titre;
+
+  const p = document.createElement("p");
+  p.className = "message__text";
+  p.textContent = texte;
+
+  bloc.appendChild(h2);
+  bloc.appendChild(p);
+  historique.appendChild(bloc);
+
+  historique.scrollTop = historique.scrollHeight;
+}
+
 function envoyerMessage() {
-  // TODO : lire la saisie et gérer un message vide.
-  // TODO : obtenir la réponse, actualiser les textes et le compteur.
-  // TODO : vider la saisie après un envoi valide.
+  const texteOriginal = champSaisie.value;
+  const texteComparaison = texteOriginal.trim().toLowerCase();
+
+  if (texteComparaison === "") {
+    zoneErreur.textContent = "Veuillez écrire un message avant d'envoyer.";
+    return;
+  }
+
+  const reponse = choisirReponse(texteComparaison);
+  compteur = compteur + 1;
+  zoneCompteur.textContent = compteur;
+  ajouterMessage("user", "Message envoyé", texteOriginal.trim());
+  ajouterMessage("bot", "Réponse du chatbot", reponse);
+
+  zoneErreur.textContent = "";
+  champSaisie.value = "";
+  champSaisie.focus();
 }
 
 function recommencer() {
-  // TODO : remettre les valeurs et l'interface dans leur état initial.
+  compteur = 0;
+  zoneCompteur.textContent = compteur;
+  historique.innerHTML = "";
+  ajouterMessage("bot", "Réponse du chatbot", chatbot.accueil);
+  zoneErreur.textContent = "";
+  champSaisie.value = "";
 }
 
-// 4. Enregistrer les écouteurs après avoir écrit le HTML et les fonctions.
-// Ne pas appeler les fonctions à la place de les transmettre aux écouteurs.
+boutonEnvoyer.addEventListener("click", envoyerMessage);
+boutonRecommencer.addEventListener("click", recommencer);
+champSaisie.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    envoyerMessage();
+  }
+});
+
+recommencer();

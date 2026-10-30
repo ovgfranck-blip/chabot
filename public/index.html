@@ -1,15 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mon chatbot</title>
-  <link rel="stylesheet" href="./style.css">
-  <script src="./script.js" defer></script>
+  <title>Akio, le chatbot qui t'explique le développement Web</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- À construire : la structure complète de votre interface.
-       Consultez CONSIGNES.md avant de choisir vos éléments et leurs id.
-       Cette page est volontairement vide au démarrage. -->
+  <main class="chatbot">
+
+    <header class="chatbot__header">
+      <h1 id="titre-principal">Akio, le chatbot qui t'explique le développement Web</h1>
+      <p id="consigne" class="chatbot__consigne">
+        Écris exactement l'un des mots-clés ci-dessous, puis clique sur « Envoyer ».
+      </p>
+    </header>
+
+    <section class="chatbot__form" aria-label="Saisie du message">
+      <label for="champ-message" class="form__label">Votre message</label>
+      <input
+        type="text"
+        id="champ-message"
+        class="form__input"
+        name="message"
+        autocomplete="off"
+        placeholder="Ex. : html"
+      >
+      <div class="form__actions">
+        <button type="button" id="bouton-envoyer" class="btn btn--primary">Envoyer</button>
+        <button type="button" id="bouton-recommencer" class="btn btn--secondary">Recommencer</button>
+      </div>
+      <p id="retour-utilisateur" class="form__feedback" role="alert"></p>
+    </section>
+
+    <section class="chatbot__conversation" aria-label="Conversation">
+      <!-- L'historique est rempli par script.js : chaque envoi ajoute
+           un bloc .message--user suivi d'un bloc .message--bot -->
+      <div id="historique" class="historique" aria-live="polite"></div>
+    </section>
+
+    <section class="chatbot__keywords" aria-labelledby="titre-mots-cles">
+      <h2 id="titre-mots-cles">Mots-clés reconnus</h2>
+      <ul id="liste-mots-cles" class="keywords__list">
+        <li class="keywords__item">bonjour</li>
+        <li class="keywords__item">aide</li>
+        <li class="keywords__item">html</li>
+        <li class="keywords__item">css</li>
+        <li class="keywords__item">javascript</li>
+      </ul>
+    </section>
+
+    <footer class="chatbot__footer">
+      <p class="chatbot__counter">
+        Messages valides envoyés : <span id="compteur-messages">0</span>
+      </p>
+    </footer>
+
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>
